@@ -1122,3 +1122,13 @@ div.alert a:hover {
 .pub-authors {
   color: #3170A5;
 }
+
+.news {
+  color: #090;
+  text-align: center;
+}
+
+.news a {
+  color: #090;
+}
+
