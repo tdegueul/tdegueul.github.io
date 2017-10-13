@@ -243,11 +243,10 @@ blockquote p:last-child {
 }
 
 #profile .portrait {
-  background-image: url('../img/portrait.jpg');
+  background-image: url('../img/tdegueul.jpg');
   width: 200px;
-  height: 200px;
+  height: 300px;
   margin: 0 auto;
-  border-radius: 50%;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
