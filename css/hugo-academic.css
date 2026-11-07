@@ -565,14 +565,6 @@ article {
  *  Projects
  **************************************************/
 
-#projects.home-section li {
-  margin-bottom: 1rem;
-}
-
-#projects.home-section li:last-of-type {
-  margin-bottom: 0;
-}
-
 #projects.home-section .project-title {
   display: inline-block;
   margin-bottom: 6px;

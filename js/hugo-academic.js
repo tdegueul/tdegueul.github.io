@@ -11,7 +11,7 @@
 
   // Dynamically get responsive navigation bar offset.
   let $navbar = $('.navbar-header');
-  let navbar_offset = $navbar.innerHeight();
+  let navbar_offset = $navbar.innerHeight() || $('#navbar-main').innerHeight();
 
   /**
    * Responsive hash scrolling.
@@ -38,6 +38,7 @@
 
   // Make Scrollspy responsive.
   function fixScrollspy() {
+    navbar_offset = $navbar.innerHeight() || $('#navbar-main').innerHeight();
     let $body = $('body');
     let data = $body.data('bs.scrollspy');
     if (data) {
@@ -88,76 +89,11 @@
    * Hide mobile collapsable menu on clicking a link.
    * --------------------------------------------------------------------------- */
 
-  $(document).on('click', '.navbar-collapse.in', function(e) {
-    if ( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
-      $(this).collapse('hide');
+  $(document).on('click', '.navbar-collapse.in a', function() {
+    if (!$(this).hasClass('dropdown-toggle')) {
+      $(this).closest('.navbar-collapse').collapse('hide');
     }
   });
-
-  /* ---------------------------------------------------------------------------
-   * Filter projects.
-   * --------------------------------------------------------------------------- */
-
-  let $grid_projects = $('#container-projects');
-  $grid_projects.imagesLoaded(function () {
-    // Initialize Isotope after all images have loaded.
-    $grid_projects.isotope({
-      itemSelector: '.isotope-item',
-      layoutMode: 'masonry'
-    });
-
-    // Filter items when filter link is clicked.
-    $('#filters a').click(function () {
-      let selector = $(this).attr('data-filter');
-      $grid_projects.isotope({filter: selector});
-      $(this).removeClass('active').addClass('active').siblings().removeClass('active all');
-      return false;
-    });
-  });
-
-  /* ---------------------------------------------------------------------------
-   * Filter publications.
-   * --------------------------------------------------------------------------- */
-
-  let $grid_pubs = $('#container-publications');
-  $grid_pubs.isotope({
-    itemSelector: '.isotope-item',
-    percentPosition: true,
-    masonry: {
-      // Use Bootstrap compatible grid layout.
-      columnWidth: '.grid-sizer'
-    }
-  });
-
-  // Bind publication filter on dropdown change.
-  $('.pub-filters-select').on('change', function() {
-    // Get filter value from option value.
-    let filterValue = this.value;
-    // Apply filter to Isotope.
-    $grid_pubs.isotope({ filter: filterValue });
-
-    // Set hash URL to current filter.
-    let url = $(this).val();
-    if (url.substr(0, 9) == '.pubtype-') {
-      window.location.hash = url.substr(9);
-    } else {
-      window.location.hash = '';
-    }
-  });
-
-  // Filter publications according to hash in URL.
-  function filter_publications() {
-    let urlHash = window.location.hash.replace('#','');
-    let filterValue = '*';
-
-    // Check if hash is numeric.
-    if (urlHash != '' && !isNaN(urlHash)) {
-      filterValue = '.pubtype-' + urlHash;
-    }
-
-    $('.pub-filters-select').val(filterValue);
-    $grid_pubs.isotope({ filter: filterValue });
-  }
 
   /* ---------------------------------------------------------------------------
    * On window load.
@@ -185,14 +121,6 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(fixScrollspy, 200);
     });
-
-    // Enable publication filter for publication index page.
-    if ($('.pub-filters-select')) {
-      filter_publications();
-      // Useful for changing hash manually (e.g. in development):
-      // window.addEventListener('hashchange', filter_publications, false);
-    }
-
   });
 
 })(jQuery);
